@@ -12,8 +12,6 @@
     </div>
     <input type="text"  placeholder="country" class="search">
     <div class="cont"></div>
-
-
 </body>
 <script>
     inpt = document.querySelector('.search');
@@ -90,7 +88,6 @@
                     console.log('a')
                     document.querySelector('.time').appendChild(document.createTextNode("Time zone not found"))
                     h1.appendChild(text);
-                    
                     document.querySelector('.cont').appendChild(h1); 
                 }
             }
@@ -179,7 +176,21 @@
         .search{
             margin-left: calc( 100% - 180px);
             width: 90px;
-        }   
+        }
+        .cadre {
+            width: 110px;
+            min-width: 110px;
+            height: 80px;
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+        .key{
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .value{
+            font-size: 20px;
+        }
     }
     @media screen and (min-width: 1200px) {
         body{
