@@ -6,7 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <input type="button" value="connecter" id="connect-fb">
+    <fb:login-button 
+        scope="public_profile,email"
+        onlogin="checkLoginState();">
+    </fb:login-button>
 </body>
 <script>
   window.fbAsyncInit = function() {
@@ -39,13 +42,7 @@
         userID:'...'
     }
 }
-
-   document.getElementById('connect-fb').addEventListener('click',function(e) {
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
-   });
-   function checkLoginState() {
+function checkLoginState() {
   FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
   });
