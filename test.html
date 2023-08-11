@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="te">
+        <h1 class="country">Inconnu</h1>
+        <h1 class="time">Inconnu</h1>
+    </div>
+    <input type="text"  placeholder="country" class="search">
+    <div class="cont"></div>
+
+
+</body>
+<script>
+    inpt = document.querySelector('.search');
+    country = "Tunisia";
+    getCountry(country) ;
+
+    function clean(){
+        child = document.getElementsByClassName('cont')[0].firstChild;
+        while(child){
+            let x = child.nextSibling;
+            child.remove();
+            child = x;
+        }
+        Parent = document.querySelector('.te');
+        if(Parent.firstChild.nextSibling.firstChild)
+            Parent.firstChild.nextSibling.firstChild.remove();
+        if (Parent.lastChild.previousSibling.firstChild)
+            Parent.lastChild.previousSibling.firstChild.remove();
+    }
+
+    inpt.addEventListener('keyup',function(){
+        // delete the old informations
+        clean();
+        getCountry(this.value) ;
+    })
+
+    function getCountry(country) {
+        a= new Date();
+        d = a.getFullYear()+"-"+(a.getMonth()+1)+"-"+a.getDate()
+        link = "https://api.weatherapi.com/v1/astronomy.json?key=1fad052b8c5d4c278e1130414231008&q="+country+"&dt="+d;
+        let nreq =new XMLHttpRequest();
+        nreq.open('GET', link );
+        nreq.send();
+        console.log(nreq);
+        
+        // Create
+        let div = document.createElement('div');
+        div.className = 'cadre';
+        
+        let div1 = document.createElement('div');
+        div1.className = 'key';
+        let div2 = document.createElement('div');
+        div2.className = 'value';
+        div.append(div1,div2);
+
+        nreq.onreadystatechange = function(){
+            if( nreq.readyState == 4 ){
+                if( nreq.status == 200){
+                    var data = JSON.parse(nreq.responseText);
+                    var astronomy = data.astronomy.astro;
+                    clean();
+                    for(let elem in astronomy){
+                        a=div.cloneNode(true);
+                        a.id = elem;
+                        x = elem.replaceAll('_',' ')
+                        a.firstChild.appendChild(document.createTextNode( x ));
+                        if( (astronomy[elem]) == 1 || (astronomy[elem]) == 0 ){
+                            d = astronomy[elem] == 1 ? "yes" : "no";
+                        }else{ 
+                            d = astronomy[elem];
+                        }
+                        a.lastChild.appendChild(document.createTextNode( d ));
+                        document.querySelector('.cont').appendChild(a); 
+                    }
+                    document.querySelector('.country').appendChild(document.createTextNode(data.location.country))
+                    document.querySelector('.time').appendChild(document.createTextNode(data.location.localtime))
+                    
+                }else{
+                    clean();
+                    var h1 = document.createElement('h1');
+                    h1.style.textAlign = 'center'; 
+                    var text = document.createTextNode('No results found !');
+                    document.querySelector('.country').innerHTML = 'not Found '
+                    console.log('a')
+                    document.querySelector('.time').appendChild(document.createTextNode("Time zone not found"))
+                    h1.appendChild(text);
+                    
+                    document.querySelector('.cont').appendChild(h1); 
+                }
+            }
+        }
+    }
+</script>
+<style>
+    .te {
+        display: flex;
+        justify-content: space-between;
+    }
+    h1.time{
+        color: wheat;
+        font-size: 50px;
+        margin: 50px;
+    }
+    h1.country {
+        color: wheat;
+        font-size: 50px;
+        margin: 50px;
+    }
+    .search{
+        /* display: inline-block; */
+        /* width: 272px; */
+        font-size: 15px;
+        border-radius: 10px;
+        height: 30px;
+        margin-left: calc( 100% - 270px);
+        /* margin: 20px 0px 0px 0px; */
+        margin-bottom: 25px;
+        background: #8a888854;
+        border: none;
+        color: white;
+        padding-left: 35px;
+    }
+    body {
+        background-image: linear-gradient(268deg, #0a0a0a, #2f1313,#0f1057);
+        min-width: 400px; 
+    }
+    .cont {
+        
+        display: flex;
+        align-content: flex-end;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding: 20px 20px;
+        /* border: 1px solid black; */
+        margin: 0px 50px;
+        border-radius: 16px;
+        background-image: linear-gradient(241deg, #3b366a, #5a3030, #181852);
+    }
+    .cadre {
+        min-width: 220px;
+        margin-bottom: 20px;
+        width: 220px;
+        height: 110px;
+        font-size: 25px;
+        text-align: center;
+        color: white;
+        padding: 20px 0;
+        border-radius: 10px;
+        background-image: linear-gradient(159deg, #0d0a51, #424284,#795050);
+    }
+    .key{
+        color: white;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    .value{
+        color: #ffc7c7;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+        font-size: 30px;
+    }
+    @media screen and (max-width: 700px) {
+        h1.time{
+            font-size: 30px;
+            margin: 35px;
+        }
+        h1.country {
+            font-size: 30px;
+            margin: 35px; 
+        }
+        .search{
+            margin-left: calc( 100% - 180px);
+            width: 90px;
+        }   
+    }
+    @media screen and (min-width: 1200px) {
+        body{
+            width: 80%;
+            margin-inline-start: auto;
+            margin-inline-end: auto; 
+        }
+    }
+        
+</style>
+</html>
