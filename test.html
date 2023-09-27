@@ -69,7 +69,7 @@
                         x = elem.replaceAll('_',' ')
                         a.firstChild.appendChild(document.createTextNode( x ));
                         if( (astronomy[elem]) == 1 || (astronomy[elem]) == 0 ){
-                            d = astronomy[elem] == 1 ? "yes" : "no";
+                            d = astronomy[elem] == 0 ? "yes" : "no";
                         }else{ 
                             d = astronomy[elem];
                         }
